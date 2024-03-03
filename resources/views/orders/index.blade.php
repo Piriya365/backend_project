@@ -111,8 +111,7 @@
                             <option value="รับที่ร้าน">รับที่ร้าน</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-outline-success"><i class="bi bi-bag-check"></i> Place
-                        Order</button>
+                    <button type="submit" class="btn btn-outline-success"><i class="bi bi-bag-check"></i> ยืนยันคำสั่งซื้อ</button>
                     <a href="/CustomerDetail" class="btn btn-outline-primary"><i class="bi bi-bag-check"></i>ที่อยู่</a>
                 </form>
             </div>
