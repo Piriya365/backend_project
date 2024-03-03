@@ -107,8 +107,8 @@
                         <label for="payment_method" class="form-label">ชำระเงิน</label>
                         <select class="form-select" id="payment_method" name="payment_method" required>
                             <option value="" disabled selected>กรุณาเลือกวิธีการชำระ</option>
-                            <option value="cash">เก็บปลายทาง</option>
-                            <option value="cash">รับที่ร้าน</option>
+                            <option value="เก็บปลายทาง">เก็บปลายทาง</option>
+                            <option value="รับที่ร้าน">รับที่ร้าน</option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-outline-success"><i class="bi bi-bag-check"></i> Place

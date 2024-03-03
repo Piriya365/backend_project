@@ -61,6 +61,12 @@
                     </tbody>
                 </table>
             </div>
+            <div class="form_address">
+                <p>ชื่อผู้รับ : {{ $order->name }}</p>
+                <p>ที่อยู่ : {{ $order->address }}</p>
+                <p>เบอร์โทรศัพท์ : {{ $order->phone }}</p>
+                <p>วิธีการชำระเงิน : {{ $order->payment_method }}</p>
+            </div>
         </div>
         @endforeach
         @else
@@ -121,6 +127,10 @@ body {
 .btn-primary:focus,
 .btn-primary.focus {
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+}
+
+.form_address{
+    margin-left:10px;
 }
 </style>
 
