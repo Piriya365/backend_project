@@ -1,7 +1,7 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: white;">
     <div class="container-fluid">
         <a class="navbar-brand" href="/products"
-            style="font-family: 'Caveat', cursive; font-size: 28px; color: #4e342e;">Coffee & Friend</a>
+            style="font-family: 'Caveat', cursive; font-size: 28px; color: black;">Coffee & Friend</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -9,24 +9,24 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('orders.index') }}" style="color: #4e342e;">ตะกร้า</a>
+                    <a class="nav-link" href="{{ route('orders.index') }}" style="color: black;">ตะกร้า</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/histories" style="color: #4e342e;">คำสั่งซื้อ</a>
+                    <a class="nav-link" href="/histories" style="color: black;">คำสั่งซื้อ</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/CustomerDetail" style="color: #4e342e;">Profile</a>
+                    <a class="nav-link" href="/CustomerDetail" style="color: black;">Profile</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false" style="color: #4e342e;">
+                        data-bs-toggle="dropdown" aria-expanded="false" style="color: black;">
                         เพิ่มเติม
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <li>
                             <form action="/logout" method="POST">
                                 @csrf
-                                <a class="dropdown-item" href="#" style="color: #4e342e;"
+                                <a class="dropdown-item" href="#" style="color: black;"
                                     onclick="event.preventDefault(); this.closest('form').submit();">
                                     Logout
                                 </a>
@@ -49,22 +49,18 @@
 
 .navbar-brand {
     font-size: 24px;
-    /* ปรับขนาดของตัวหนังสือของ brand */
 }
 
 .navbar-nav .nav-link {
     font-size: 18px;
-    /* ปรับขนาดของตัวหนังสือของ nav links */
 }
 
 .navbar-toggler {
     font-size: 24px;
-    /* ปรับขนาดของ toggle button */
 }
 
 .navbar-collapse {
     font-size: 18px;
-    /* ปรับขนาดของ dropdown menu */
 }
 </style>
 

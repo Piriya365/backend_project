@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ตะกร้า</title>
+    <link rel="icon" type="png" href="imgs/logo.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -92,21 +93,22 @@
                     </div>
                     <div class="mb-3">
                         <label for="address" class="form-label">ที่อยู่</label>
-                        <input type="text" class="form-control" id="address" name="address" required>
+                        <textarea type="text" class="form-control" id="address" name="address" required></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="phone" class="form-label">เบอร์โทรศัพท์</label>
-                        <input type="tel" class="form-control" id="phone" name="phone" required>
+                        <input type="tel" class="form-control" id="phone" name="phone" pattern="[0-9]{10}" maxlength="10" placeholder="กรอกเบอร์โทรศัพท์(10หลัก)" required>
                     </div>
                     <div class="mb-3">
                         <label for="note" class="form-label">หมายเหตุ</label>
-                        <textarea class="form-control" id="note" name="note"></textarea>
+                        <textarea class="form-control" id="note" name="note" placeholder="หมายเหตุ (ไม่จำเป็น)"></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="payment_method" class="form-label">ชำระเงิน</label>
                         <select class="form-select" id="payment_method" name="payment_method" required>
                             <option value="" disabled selected>กรุณาเลือกวิธีการชำระ</option>
                             <option value="cash">เก็บปลายทาง</option>
+                            <option value="cash">รับที่ร้าน</option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-outline-success"><i class="bi bi-bag-check"></i> Place
@@ -118,8 +120,6 @@
     </div>
     @endif
 </body>
-
-</html>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -139,6 +139,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+
 
 <style>
 body {
@@ -187,3 +188,5 @@ body {
         width: 90%;
     }
 }
+</style>
+</html>

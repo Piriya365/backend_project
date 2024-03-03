@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>สร้างสินค้า</title>
+    <link rel="icon" type="png" href="imgs/logo.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -44,7 +45,7 @@
                         <textarea class="form-control" name="description" id="description"></textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-outline-success"><i class="bi bi-house-add"></i>
+                    <button type="submit" class="btn btn-outline-dark"><i class="bi bi-house-add"></i>
                         สร้างสินค้า</button>
                 </form>
             </div>
@@ -63,13 +64,9 @@ body {
 .container {
     color: white;
     margin-top: 50px;
-    /* ระยะห่างด้านบนของ container */
-    background-color: #0d433b;
-    /* สีพื้นหลังของ container */
+    background-color: #816451;
     border-radius: 10px;
-    /* มุมขอบของ container */
     padding: 20px;
-    /* การเพิ่มระยะห่างภายใน container */
 }
 </style>
 

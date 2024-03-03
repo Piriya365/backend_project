@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Details</title>
+    <link rel="icon" type="png" href="imgs/logo.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -17,32 +18,6 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree&family=IBM+Plex+Sans+Thai+Looped&family=IBM+Plex+Sans+Thai:wght@300&family=Noto+Sans+Thai:wght@100..900&family=Noto+Sans:wght@500&family=Poppins:wght@300&family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
         rel="stylesheet">
-    <style>
-    body {
-        background-color: #ccc4a3;
-        font-family: "Sarabun", sans-serif;
-        font-weight: 300;
-        font-style: normal;
-    }
-
-    .container {
-        margin-top: 50px;
-        /* ระยะห่างด้านบนของ container */
-        background-color: #0d433b;
-        /* สีพื้นหลังของ container */
-        border-radius: 10px;
-        /* มุมขอบของ container */
-        padding: 20px;
-        /* การเพิ่มระยะห่างภายใน container */
-    }
-
-    @media (max-width: 768px) {
-        .container {
-            margin-top: 30px;
-            /* ระยะห่างด้านบนของ container ในขนาดจอเล็กกว่า 768px */
-        }
-    }
-    </style>
 </head>
 
 <body>
@@ -66,13 +41,14 @@
                             <p class="card-text">เบอร์โทรศัพท์: {{ $customer->phone }}</p>
 
                             @if ($customer->address)
-                            <a href="/orders?customer_id={{ $customer->id }}" class="btn btn-outline-success"
-                                data-customer-id="{{ $customer->id }}" data-customer-name="{{ $customer->name }}"
+                            <a href="/orders?customer_id={{ $customer->id }}" class="btn btn-outline-success" data-customer-id="{{ $customer->id }}"
+                                data-customer-name="{{ $customer->name }}"
                                 data-customer-address="{{ $customer->address }}"
                                 data-customer-phone="{{ $customer->phone }}">
                                 <i class="bi bi-house-check"></i>ใช้
                             </a>
                             @endif
+
 
 
                             <a href="{{ route('CustomerDetail.edit', $customer->id) }}"
@@ -89,7 +65,7 @@
                     </div>
                     @endif
                     @endforeach
-                    <a class="btn btn-outline-success" href="{{ route('CustomerDetail.create') }}"><i
+                    <a class="btn btn-outline-dark" href="{{ route('CustomerDetail.create') }}"><i
                             class="bi bi-house-add"></i> สร้าง</a>
                 </div>
             </div>
@@ -98,7 +74,7 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const useButtons = document.querySelectorAll('.btn-success');
+        const useButtons = document.querySelectorAll('.btn-outline-success');
         useButtons.forEach(button => {
             button.style.display = button.dataset.customerAddress ? 'inline-block' : 'none';
             button.addEventListener('click', function() {
@@ -115,6 +91,30 @@
         });
     });
     </script>
+
+
+    <style>
+    body {
+        background-color: #ccc4a3;
+        font-family: "Sarabun", sans-serif;
+        font-weight: 300;
+        font-style: normal;
+    }
+
+    .container {
+        margin-top: 50px;
+        background-color: #816451;
+        border-radius: 10px;
+        padding: 20px;
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            margin-top: 30px;
+            /* ระยะห่างด้านบนของ container ในขนาดจอเล็กกว่า 768px */
+        }
+    }
+    </style>
 </body>
 
 </html>

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>แก้ไขรายละเอียด</title>
+    <link rel="icon" type="png" href="imgs/logo.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -45,7 +46,7 @@
                     </div>
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-outline-warning"><i class="bi bi-pen"></i> แก้ไข</button>
-                        <a href="javascript:history.back()" class="btn btn-outline-danger"><i
+                        <a href="javascript:history.back()" class="btn btn-outline-dark"><i
                                 class="bi bi-arrow-return-left"></i> ย้อนกลับ</a>
                     </div>
                 </form>
@@ -55,6 +56,7 @@
 </body>
 
 <style>
+
 body {
     background-color: #ccc4a3;
     font-family: "Sarabun", sans-serif;
@@ -62,15 +64,13 @@ body {
     font-style: normal;
 }
 
+
 .container {
-    background-color: #0d433b;
-    /* เปลี่ยนสีพื้นหลังของ container */
+    background-color: #816451;
     color: white;
     margin-top: 40px;
     border-radius: 15px;
-    /* เพิ่มขอบโค้งให้กับ container */
     padding: 20px;
-    /* เพิ่มช่องว่างภายใน container */
 }
 </style>
 
