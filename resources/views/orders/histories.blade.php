@@ -54,7 +54,7 @@
                             <td>{{ $order->amount }}</td>
                         </tr>
                         @php
-                        $total_order_price += $order->total;
+                        $total_order_price += $order->amount * $order->price;
                         @endphp
                         @endforeach
                         <td colspan="4" align="right">ราคารวม : {{ $total_order_price }} บาท</td>
