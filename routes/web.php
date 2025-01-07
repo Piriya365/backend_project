@@ -31,15 +31,21 @@ Route::middleware([
     })->name('dashboard');
 });
 
-
+// การจัดการสินค้า (Product)
 Route::middleware('auth:sanctum')->resource('products', ProductController::class);
+// การจัดการคำสั่งซื้อ (Order)
 Route::middleware('auth:sanctum')->resource('orders', OrderController::class);
+// แสดงรายละเอียดเพิ่มเติมของสินค้า
 Route::middleware('auth:sanctum')->get('products/more/{id}', [ProductController::class, 'showMore'])->name('products.more');
+// บันทึกข้อมูลการชำระเงิน
 Route::middleware('auth:sanctum')->post('orders/payment', [OrderController::class, 'storePayment'])->name('orders.histories');
+// การจัดการประวัติการสั่งซื้อ (Histories)
 Route::middleware('auth:sanctum')->resource('histories', HistoriesController::class);
-
+// การจัดการข้อมูลลูกค้า (Customer Detail)
 Route::middleware('auth:sanctum')->resource('CustomerDetail', CustomerDetailController::class);
-
+// แก้ไขข้อมูลลูกค้า
 Route::middleware('auth:sanctum')->get('customer/{id}/edit', [CustomerDetailController::class,'edit'])->name('CustomerDetail.edit');
+// บันทึกการอัปเดตข้อมูลลูกค้า
 Route::middleware('auth:sanctum')->put('customer/{id}', [CustomerDetailController::class,'update'])->name('CustomerDetail.update');
+// ลบข้อมูลลูกค้า
 Route::middleware('auth:sanctum')->delete('customer/{id}', [CustomerDetailController::class,'destroy'])->name('CustomerDetail.destroy');

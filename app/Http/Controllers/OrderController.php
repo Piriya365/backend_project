@@ -13,18 +13,21 @@ use Illuminate\Http\Request;
 class OrderController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * จัดการการบันทึกข้อมูลการชำระเงินสำหรับคำสั่งซื้อ
+     * อัปเดตสถานะคำสั่งซื้อเป็น "ชำระแล้ว" (status = 1) และบันทึกรายละเอียดการชำระเงินลงในตาราง Histories
      */
     public function storePayment(Request $request)
     {
-
+        // ค้นหาคำสั่งซื้อของผู้ใช้ที่สถานะยังไม่ชำระเงิน (status = 0)
         $order = Order::where('user_id', Auth::id())->where('status', 0)->first();
 
         if ($order) {
             $orderDetails = $order->order_details;
 
+            // ตั้งชื่อสินค้าพื้นฐานในกรณีไม่มีรายละเอียดสินค้า
             $productName = $orderDetails->isNotEmpty() ? $orderDetails->first()->product_name : 'Unknown Product';
 
+            // วนลูปบันทึกรายละเอียดคำสั่งซื้อแต่ละรายการลงในตาราง Histories
             foreach ($orderDetails as $orderDetail) {
                 $productName = $orderDetail->product_name;
 
@@ -43,9 +46,10 @@ class OrderController extends Controller
                     'product_image' => $orderDetail->product_image,
                 ];
 
+                // บันทึกข้อมูลการชำระเงินลงในฐานข้อมูล
                 Histories::create($paymentInformation);
             }
-
+            // อัปเดตสถานะคำสั่งซื้อเป็น "ชำระแล้ว"
             $order->update([
                 'status' => 1
             ]);
@@ -56,10 +60,13 @@ class OrderController extends Controller
 
 
 
-
+    /**
+     * แสดงคำสั่งซื้อที่ยังไม่ได้ชำระเงิน (ตะกร้าสินค้า)
+     */
     public function index()
     {
         // 0 = cart 1=checkout
+        // ดึงคำสั่งซื้อของผู้ใช้ที่สถานะเป็น 0 (ตะกร้าสินค้า)
         $order = Order::where('user_id', Auth::id())->where('status', 0)->first();
         return view('orders.index')->with('order', $order);
     }
@@ -72,23 +79,26 @@ class OrderController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
+     /**
+     * เพิ่มสินค้าในตะกร้าหรืออัปเดตคำสั่งซื้อที่มีอยู่
      */
     public function store(Request $request)
     {
-        $product = Product::find($request->product_id);
-        $order = Order::where('user_id', Auth::id())->where('status', 0)->first();
+        $product = Product::find($request->product_id); //ค้นหาสินค้าที่ผู้ใช้เลือก
+        $order = Order::where('user_id', Auth::id())->where('status', 0)->first();//ตรวจสอบว่าผู้ใช้มีคำสั่งซื้อที่ยังไม่ได้ชำระหรือไม่
 
         if ($order && $order->user_id === Auth::id()) {
+            // ตรวจสอบว่าสินค้านั้นมีอยู่ในตะกร้าหรือไม่
             $orderDetail = $order->order_details()->where('product_id', $product->id)->first();
 
             if ($orderDetail) {
+                // ถ้าสินค้ามีอยู่ในตะกร้า เพิ่มจำนวนสินค้า
                 $amountNew = $orderDetail->amount + 1;
                 $orderDetail->update([
                     'amount' => $amountNew
                 ]);
             } else {
+                // ถ้าสินค้ายังไม่มีในตะกร้า ให้เพิ่มลงในคำสั่งซื้อ
                 $prepareCartDetail = [
                     'order_id' => $order->id,
                     'user_id' => Auth::id(),
@@ -107,7 +117,7 @@ class OrderController extends Controller
                 // รีเซ็ต order_id ใหม่เป็น 1 สำหรับผู้ใช้ใหม่
                 $lastOrder->update(['order_id' => 1]);
             }
-
+            // ถ้าไม่มีคำสั่งซื้อ ให้สร้างคำสั่งซื้อใหม่
             $newOrderId = Order::where('user_id', Auth::id())->max('order_id') + 1;
 
             $existingOrders = Order::where('user_id', Auth::id())->get();
@@ -138,11 +148,10 @@ class OrderController extends Controller
             ];
             $orderDetail = OrderDetail::create($prepareCartDetail);
         }
-        $totalRaw = 0;
-        $total = $order->order_details->map(function ($orderDetail) use (&$totalRaw) {
-            $totalRaw += $orderDetail->amount * $orderDetail->price;
-            return $totalRaw;
-        })->toArray();
+        // คำนวณราคาทั้งหมดของคำสั่งซื้อ
+        $total = $order->order_details->sum(function ($orderDetail) {
+            return $orderDetail->amount * $orderDetail->price;
+        });
         $order = Order::where('user_id', Auth::id())->where('status', 0)->first();
         $historyData = [
             'order_id' => $order->id,
@@ -153,9 +162,7 @@ class OrderController extends Controller
             'payment_method' => $request->input('payment_method'),
         ];
 
-        $order->update([
-            'total' => array_sum($total)
-        ]);
+        $order->update(['total' => $total]);// อัปเดตราคาสุทธิในคำสั่งซื้อ
 
         return redirect()->route('products.index');
     }
@@ -178,13 +185,14 @@ class OrderController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * อัปเดตจำนวนสินค้าหรือเปลี่ยนสถานะคำสั่งซื้อ
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request, Order $order)//จัดการการอัปเดตรายละเอียดคำสั่งซื้อ เช่น เพิ่มหรือลดจำนวนสินค้า
     {
         $orderDetail = $order->order_details()->where('product_id', $request->product_id)->first();
 
         if ($request->value == "checkout") {
+            // อัปเดตสถานะคำสั่งซื้อเป็น "ชำระแล้ว"  
             $order->update([
                 'status' => 1
             ]);
@@ -195,23 +203,19 @@ class OrderController extends Controller
                 } else {
                     $amountNew = $orderDetail->amount - 1;
                 }
-
-                if ($amountNew <= 0) {
-                    $orderDetail->update(['amount' => 1]);
-                } else {
-                    $orderDetail->update(['amount' => $amountNew]);
-                }
-
-                $totalRaw = 0;
-                $total = $order->order_details->map(function ($orderDetail) use (&$totalRaw) {
-                    $totalRaw += $orderDetail->amount * $orderDetail->price;
-                    return $totalRaw;
-                })->toArray();
-
-                $order->update([
-                    'total' => array_sum($total)
-                ]);
+            
+                // อัปเดตจำนวนสินค้า
+                $orderDetail->update(['amount' => max(1, $amountNew)]);
+            
+                // คำนวณราคารวมใหม่
+                $total = $order->order_details->sum(function ($orderDetail) {
+                    return $orderDetail->amount * $orderDetail->price;
+                });
+            
+                // อัปเดตราคารวมใน Order
+                $order->update(['total' => $total]);
             }
+            
 
         }
 
@@ -221,9 +225,9 @@ class OrderController extends Controller
 
 
     /**
-     * Remove the specified resource from storage.
+     * ลบสินค้าจากตะกร้าสินค้า
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request)//ฟังก์ชันนี้จัดการการลบสินค้าจากตะกร้าของผู้ใช้
     {
         $order = Order::where('user_id', Auth::id())->where('status', 0)->first();
         $product_id = $request->input('product_id');
@@ -232,18 +236,18 @@ class OrderController extends Controller
             $orderDetail = $order->order_details()->where('product_id', $product_id)->first();
 
             if ($orderDetail) {
+                // ลบสินค้านั้นออกจากคำสั่งซื้อ
                 $orderDetail->delete();
-
-                $totalRaw = 0;
-                $total = $order->order_details->map(function ($orderDetail) use (&$totalRaw) {
-                    $totalRaw += $orderDetail->amount * $orderDetail->price;
-                    return $totalRaw;
-                })->toArray();
-
-                $order->update([
-                    'total' => array_sum($total)
-                ]);
+            
+                // คำนวณราคารวมใหม่
+                $total = $order->order_details->sum(function ($orderDetail) {
+                    return $orderDetail->amount * $orderDetail->price;
+                });
+            
+                // อัปเดตราคารวมใน Order
+                $order->update(['total' => $total]);
             }
+            
         }
 
         return redirect()->route('orders.index');
